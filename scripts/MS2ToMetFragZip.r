@@ -130,6 +130,6 @@ toMetfragCommand(mappedMS2 = MappedMS2s$mapped,unmappedMS2 = MappedMS2s$unmapped
 		 maxSpectra=maxSpectra, maxPrecursorMass = maxPrecursorMass, minPrecursorMass = minPrecursorMass, mode = mode, primary = (adductRules == "primary"))
 
 
-zip(zipfile=output,list.files("metfragTMP",full.names = TRUE))
-
+zip(zipfile="mappedtometfrag.zip",list.files("metfragTMP",full.names = TRUE))
+file.copy(from ="mappedtometfrag.zip" ,to = output,overwrite = T)
 
