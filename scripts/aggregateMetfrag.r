@@ -35,6 +35,8 @@ for(arg in args)
 
 inputs<-gsub(pattern = " ",replacement = "",strsplit(x = inputs,split = ",",fixed=T)[[1]],fixed=T)
 realNamesTMP<-gsub(pattern = " ",replacement = "",strsplit(x = realNames,split = ",",fixed=T)[[1]],fixed=T)
+inputs<-inputs[inputs!=""]
+realNamesTMP<-realNamesTMP[realNamesTMP!=""]
 
 
 ##### if it is a zip file
