@@ -36,6 +36,21 @@ for(arg in args)
 inputs<-gsub(pattern = " ",replacement = "",strsplit(x = inputs,split = ",",fixed=T)[[1]],fixed=T)
 realNamesTMP<-gsub(pattern = " ",replacement = "",strsplit(x = realNames,split = ",",fixed=T)[[1]],fixed=T)
 
+
+##### if it is a zip file
+if(length(realNamesTMP)==1)
+{
+if(tools::file_ext(strsplit(x = realNamesTMP,split = ",",fixed=T)[[1]])=="zip")
+{
+dir.create("metfragTMPRes", showWarnings = FALSE)
+unzip(inputs,exdir = "metfragTMPRes", junkpaths = T)
+files<-list.files("metfragTMPRes",full.names = TRUE)
+inputs<-files
+realNamesTMP<-files
+}
+
+}
+
 inputs<-inputs[inputs!=""]
 realNamesTMP<-realNamesTMP[realNamesTMP!=""]
 
