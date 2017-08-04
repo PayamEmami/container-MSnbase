@@ -129,7 +129,20 @@ toMetfragCommand(mappedMS2 = MappedMS2s$mapped,unmappedMS2 = MappedMS2s$unmapped
                  includeMapped = T,settingsObject = settingsObject,preprocess = F,savePath=directoryTMP, minPeaks=minPeaks, 
 		 maxSpectra=maxSpectra, maxPrecursorMass = maxPrecursorMass, minPrecursorMass = minPrecursorMass, mode = mode, primary = (adductRules == "primary"))
 
+print(length(list.files("metfragTMP",full.names = TRUE)))
 
-zip(zipfile="mappedtometfrag.zip",list.files("metfragTMP",full.names = TRUE),,flags = "-j")
-file.copy(from ="mappedtometfrag.zip" ,to = output,overwrite = T)
+zip(zipfile="mappedtometfrag.zip",files=list.files("metfragTMP",full.names = TRUE),flags = "-j")
+print(list.files())
+print(output)
+res<-file.copy(from ="mappedtometfrag.zip" ,to = output,overwrite = T)
 
+if(!res)
+{
+
+print("First zipping faild, trying another package")
+setwd("metfragTMP")
+zip::zip(zipfile="mappedtometfrag.zip",files=list.files(pattern="txt"))
+
+res2<-file.copy(from ="mappedtometfrag.zip" ,to = output,overwrite = T)
+
+}
