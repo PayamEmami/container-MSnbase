@@ -16,7 +16,7 @@ RUN R -e 'install.packages(c("ggplot2","digest","lattice","XML","Rcpp","reshape2
 
 # Install CAMERA
 RUN R -e 'source("https://bioconductor.org/biocLite.R"); biocLite("MSnbase")'
-
+RUN R -e 'source("https://bioconductor.org/biocLite.R"); biocLite("zip")'
 # De-install not needed packages
 RUN apt-get -y --purge --auto-remove remove make gcc gfortran g++
 
@@ -30,8 +30,8 @@ ADD runTest1.sh /usr/local/bin/
 
 RUN chmod +x /usr/local/bin/*.r
 RUN chmod +x /usr/local/bin/runTest1.sh
-RUN apt-get -y --no-install-recommends install make gcc gfortran g++ libblas-dev liblapack-dev libxml++2.6-dev libexpat1-dev libxml2
-RUN R -e 'source("https://bioconductor.org/biocLite.R"); biocLite("zip")'
+
+
 # Define Entry point script
 #ENTRYPOINT [ "Rscript" ]
 #CMD [ "/usr/local/bin/show_chromatogram.r" ]

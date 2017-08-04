@@ -20,7 +20,7 @@ fragmentabs<-0.01
 database<-"KEGG"
 mode<-"pos"
 adductRules<-"primary"
-
+filetype<-NA
 for(arg in args)
 {
   argCase<-strsplit(x = arg,split = "=")[[1]][1]
@@ -98,6 +98,10 @@ for(arg in args)
   {
     adductRules=as.character(value)
   }
+  if(argCase=="filetype")
+  {
+    filetype=as.character(value)
+  }
 
 }
 
@@ -118,7 +122,8 @@ cameraObject<-get(varNameForNextStep)
 source("/usr/local/bin/adductCalculator.r")
 source("/usr/local/bin/toMetfragCommand.r")
 
-
+if(filetype=="zip")
+{
 directoryTMP<-"metfragTMP"
 dir.create("metfragTMP", showWarnings = FALSE)
 
@@ -131,18 +136,10 @@ toMetfragCommand(mappedMS2 = MappedMS2s$mapped,unmappedMS2 = MappedMS2s$unmapped
 
 print(length(list.files("metfragTMP",full.names = TRUE)))
 
-zip(zipfile="mappedtometfrag.zip",files=list.files("metfragTMP",full.names = TRUE),flags = "-j")
-print(list.files())
-print(output)
-res<-file.copy(from ="mappedtometfrag.zip" ,to = output,overwrite = T)
 
-if(!res)
-{
-
-print("First zipping faild, trying another package")
-setwd("metfragTMP")
 zip::zip(zipfile="mappedtometfrag.zip",files=list.files(pattern="txt"))
 
-res2<-file.copy(from ="mappedtometfrag.zip" ,to = output,overwrite = T)
-
+res2<-file.copy(from ="mappedtometfrag.zip" ,to = paste(output,"/",mappedtometfrag.zip,sep=""),overwrite = T)
 }
+
+

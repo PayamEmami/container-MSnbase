@@ -11,6 +11,7 @@ output<-NA
 appendTo<-NA
 appendToName<-"realNames"
 cleanFileName=T
+filetype=NA
 for(arg in args)
 {
   argCase<-strsplit(x = arg,split = "=")[[1]][1]
@@ -24,7 +25,10 @@ for(arg in args)
   {
     inputs=as.character(value)
   }
-
+  if(argCase=="filetype")
+  {
+    filetype=as.character(value)
+  }
   if(argCase=="output")
   {
     output=as.character(value)
@@ -37,21 +41,18 @@ inputs<-gsub(pattern = " ",replacement = "",strsplit(x = inputs,split = ",",fixe
 realNamesTMP<-gsub(pattern = " ",replacement = "",strsplit(x = realNames,split = ",",fixed=T)[[1]],fixed=T)
 inputs<-inputs[inputs!=""]
 realNamesTMP<-realNamesTMP[realNamesTMP!=""]
-
-
-##### if it is a zip file
-if(length(realNamesTMP)==1)
-{
 if(cleanFileName)
   realNamesTMP<-gsub(pattern = "Galaxy.*-\\[|\\].*",replacement = "",x = realNamesTMP)
-if(grepl(x=strsplit(x = realNamesTMP,split = ",",fixed=T)[[1]],pattern = ".zip",fixed=T))
+
+##### if it is a zip file
+if(filetype=="zip")
 {
+
 dir.create("metfragTMPRes", showWarnings = FALSE)
 unzip(inputs,exdir = "metfragTMPRes", junkpaths = T)
 files<-list.files("metfragTMPRes",full.names = TRUE)
 inputs<-files
 realNamesTMP<-files
-}
 
 }
 
@@ -59,8 +60,6 @@ inputs<-inputs[inputs!=""]
 realNamesTMP<-realNamesTMP[realNamesTMP!=""]
 
 
-if(cleanFileName)
-  realNamesTMP<-gsub(pattern = "Galaxy.*-\\[|\\].*",replacement = "",x = realNamesTMP)
 
 allMS2IDs<-c()
 for(i in 1:length(inputs))
