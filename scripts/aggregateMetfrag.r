@@ -42,7 +42,9 @@ realNamesTMP<-realNamesTMP[realNamesTMP!=""]
 ##### if it is a zip file
 if(length(realNamesTMP)==1)
 {
-if(tools::file_ext(strsplit(x = realNamesTMP,split = ",",fixed=T)[[1]])=="zip")
+if(cleanFileName)
+  realNamesTMP<-gsub(pattern = "Galaxy.*-\\[|\\].*",replacement = "",x = realNamesTMP)
+if(grepl(x=strsplit(x = realNamesTMP,split = ",",fixed=T)[[1]],pattern = ".zip",fixed=T))
 {
 dir.create("metfragTMPRes", showWarnings = FALSE)
 unzip(inputs,exdir = "metfragTMPRes", junkpaths = T)
